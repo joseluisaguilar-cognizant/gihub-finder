@@ -11,6 +11,9 @@ import Navbar from './components/layout/Navbar/Navbar';
 import Footer from './components/layout/Footer/Footer';
 
 const App: FunctionComponent = () => {
+  // This  is the method we can use to access ENV variables:
+  // console.log(process.env.REACT_APP_GITHUB_TOKEN);
+
   return (
     <Router>
       <div className="flex flex-col justify-between h-screen">
