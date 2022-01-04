@@ -8,6 +8,9 @@ const githubReducer = (
     case 'GET_USERS':
       return { ...state, users: action.payload, loading: false };
 
+    case 'CLEAR_USERS':
+      return { ...state, users: [], loading: false };
+
     case 'ENABLE_LOADING':
       return { ...state, loading: true };
     default:

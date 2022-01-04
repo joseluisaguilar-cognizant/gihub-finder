@@ -1,5 +1,7 @@
 # Github finder project
 
+![Github finder screenshot](./src/assets/Screenshot.png)
+
 ## Notes:
 
 - Tailwind CSS & DaisyUI

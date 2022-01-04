@@ -9,9 +9,10 @@ export default interface UserInterface {
   id: number;
   login: string;
   node_id: string;
-  organization_url: string;
+  organizations_url: string;
   received_events_url: string;
   repos_url: string;
+  score?: number;
   site_admin: boolean;
   starred_url: string;
   subscriptions_url: string;
