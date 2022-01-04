@@ -10,11 +10,9 @@ const UserResults: FunctionComponent<UserResultsProps> = () => {
   const { users, loading, fetchUsers } = useContext(GithubContext);
 
   useEffect(() => {
-    fetchUsers();
+    // ! JUST FOR TESTING PURPOSES
+    // fetchUsers();
   }, []);
-
-  // ! TAKE A LOOK ON IT, IT RENDERS SEVERAL TIMES!!
-  console.log(users, loading);
 
   if (loading) {
     return <Spinner />;

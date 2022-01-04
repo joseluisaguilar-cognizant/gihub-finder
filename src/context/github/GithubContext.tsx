@@ -29,7 +29,7 @@ export const GithubProvider: FunctionComponent<GithubProviderProps> = ({
 }) => {
   const initialState = {
     users: [],
-    loading: true,
+    loading: false,
   };
 
   const [state, dispatch] = useReducer(githubReducer, initialState);
@@ -38,6 +38,8 @@ export const GithubProvider: FunctionComponent<GithubProviderProps> = ({
   // const [loading, setLoading] = useState<boolean>(true);
 
   const fetchUsers = async (): Promise<void> => {
+    dispatch({ type: 'ENABLE_LOADING' });
+
     // ! If you would like to make the request with the token access, take this into account:
     // const response = await fetch(`${process.env.REACT_APP_GITHUB_URL}/users`, {
     //   headers: {
