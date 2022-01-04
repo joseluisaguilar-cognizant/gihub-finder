@@ -1,3 +1,15 @@
+# Github finder project
+
+## Notes:
+
+- Tailwind CSS & DaisyUI
+- TypeScript
+- Github API
+- Context provider
+- useReducers
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
