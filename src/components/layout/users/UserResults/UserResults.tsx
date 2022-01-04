@@ -1,4 +1,5 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useContext, useEffect, useState } from 'react';
+import { GithubContext } from '../../../../context/github/GithubContext';
 import UserInterface from '../../../../interfaces/User.interface';
 import Spinner from '../../../shared/Spinner/Spinner';
 import UserItem from '../UserItem/UserItem';
@@ -6,28 +7,14 @@ import UserItem from '../UserItem/UserItem';
 interface UserResultsProps {}
 
 const UserResults: FunctionComponent<UserResultsProps> = () => {
-  const [users, setUsers] = useState<Array<UserInterface>>([]);
-  const [loading, setLoading] = useState(true);
+  const { users, loading, fetchUsers } = useContext(GithubContext);
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  const fetchUsers = async (): Promise<void> => {
-    // ! If you would like to make the request with the token access, take this into account:
-    // const response = await fetch(`${process.env.REACT_APP_GITHUB_URL}/users`, {
-    //   headers: {
-    //     Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
-    //   },
-    // });
-
-    const response = await fetch(`${process.env.REACT_APP_GITHUB_URL}/users`);
-
-    const data: Array<UserInterface> = await response.json();
-
-    setUsers(data);
-    setLoading(false);
-  };
+  // ! TAKE A LOOK ON IT, IT RENDERS SEVERAL TIMES!!
+  console.log(users, loading);
 
   if (loading) {
     return <Spinner />;
