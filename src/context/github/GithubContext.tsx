@@ -1,5 +1,12 @@
-import { createContext, FunctionComponent, ReactNode, useState } from 'react';
+import {
+  createContext,
+  FunctionComponent,
+  ReactNode,
+  useState,
+  useReducer,
+} from 'react';
 import UserInterface from '../../interfaces/User.interface';
+import githubReducer from './GithubReducer';
 
 interface IGithubContext {
   users: Array<UserInterface>;
@@ -20,8 +27,15 @@ export const GithubContext = createContext<IGithubContext>(
 export const GithubProvider: FunctionComponent<GithubProviderProps> = ({
   children,
 }) => {
-  const [users, setUsers] = useState<Array<UserInterface>>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const initialState = {
+    users: [],
+    loading: true,
+  };
+
+  const [state, dispatch] = useReducer(githubReducer, initialState);
+
+  // const [users, setUsers] = useState<Array<UserInterface>>([]);
+  // const [loading, setLoading] = useState<boolean>(true);
 
   const fetchUsers = async (): Promise<void> => {
     // ! If you would like to make the request with the token access, take this into account:
@@ -35,11 +49,15 @@ export const GithubProvider: FunctionComponent<GithubProviderProps> = ({
 
     const data: Array<UserInterface> = await response.json();
 
-    setUsers(data);
-    setLoading(false);
+    dispatch({ type: 'GET_USERS', payload: data });
+
+    // setUsers(data);
+    // setLoading(false);
   };
   return (
-    <GithubContext.Provider value={{ users, loading, fetchUsers }}>
+    <GithubContext.Provider
+      value={{ users: state.users, loading: state.loading, fetchUsers }}
+    >
       {children}
     </GithubContext.Provider>
   );
