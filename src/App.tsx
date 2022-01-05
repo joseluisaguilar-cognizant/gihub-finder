@@ -12,6 +12,7 @@ import Footer from './components/layout/Footer/Footer';
 import { GithubProvider } from './context/github/GithubContext';
 import { AlertProvider } from './context/alert/AlertContext';
 import Alert from './components/layout/Alert/Alert';
+import UserDetail from './pages/UserDetail/UserDetail';
 
 const App: FunctionComponent = () => {
   // This  is the method we can use to access ENV variables:
@@ -28,6 +29,7 @@ const App: FunctionComponent = () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/user/:userId" element={<UserDetail />} />
                 <Route path="/*" element={<NotFound />} />
               </Routes>
             </main>

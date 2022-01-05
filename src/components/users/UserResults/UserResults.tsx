@@ -8,12 +8,7 @@ import UserItem from '../UserItem/UserItem';
 interface UserResultsProps {}
 
 const UserResults: FunctionComponent<UserResultsProps> = () => {
-  const { users, loading, fetchUsers } = useContext(GithubContext);
-
-  useEffect(() => {
-    // ! JUST FOR TESTING PURPOSES
-    // fetchUsers();
-  }, []);
+  const { users, loading } = useContext(GithubContext);
 
   if (loading) {
     return <Spinner />;

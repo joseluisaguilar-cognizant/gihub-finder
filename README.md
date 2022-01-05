@@ -10,6 +10,7 @@
 - Context provider
 - useReducers
 - Multiple context
+- Set up params in requests (with URLSearchParams)
 
 ---
 

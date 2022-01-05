@@ -1,14 +1,19 @@
 import { createContext, FunctionComponent, ReactNode, useReducer } from 'react';
 import UserInterface from '../../interfaces/User.interface';
+import UserDetailInterface from '../../interfaces/UserDetail.interface';
+import { UserRepo } from '../../interfaces/UserRepo';
 import UserSearchInterface from '../../interfaces/UserSpecific.interface';
-import githubReducer from './GithubReducer';
+import githubReducer, { IGithubReducerState } from './GithubReducer';
 
 interface IGithubContext {
   users: Array<UserInterface>;
+  user: UserDetailInterface;
+  repos: Array<UserRepo>;
   loading: boolean;
-  fetchUsers: () => Promise<void>;
   searchUser: (userId: string) => Promise<void>;
   clearUsers: () => Promise<void>;
+  getUser: (userId: string) => Promise<void>;
+  getUserRepos: (userId: string) => Promise<void>;
 }
 
 interface GithubProviderProps {
@@ -24,32 +29,19 @@ export const GithubContext = createContext<IGithubContext>(
 export const GithubProvider: FunctionComponent<GithubProviderProps> = ({
   children,
 }) => {
-  const initialState = {
+  const initialState: IGithubReducerState = {
     users: [],
+    user: {} as UserDetailInterface,
+    repos: [],
     loading: false,
   };
 
   const [state, dispatch] = useReducer(githubReducer, initialState);
 
-  // ? NO LONGER IS GOING TO BE USED
-  const fetchUsers = async (): Promise<void> => {
-    dispatch({ type: 'ENABLE_LOADING' });
-
-    // ! If you would like to make the request with the token access, take this into account:
-    // const response = await fetch(`${process.env.REACT_APP_GITHUB_URL}/users`, {
-    //   headers: {
-    //     Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
-    //   },
-    // });
-
-    const response = await fetch(`${GITHUB_URL}/users`);
-
-    const data: Array<UserInterface> = await response.json();
-
-    dispatch({ type: 'GET_USERS', payload: data });
-  };
-
-  // Get Search results
+  /**
+   * Search from users
+   * @param userId - ID of user
+   */
   const searchUser = async (userId: string): Promise<void> => {
     dispatch({ type: 'ENABLE_LOADING' });
 
@@ -59,7 +51,6 @@ export const GithubProvider: FunctionComponent<GithubProviderProps> = ({
 
     // The URL we are trying to create is: https://api.github.com/search/users?q=USERNAME
     const response = await fetch(`${GITHUB_URL}/search/users?${params}`);
-
     const data: UserSearchInterface = await response.json();
 
     console.log(data);
@@ -67,19 +58,66 @@ export const GithubProvider: FunctionComponent<GithubProviderProps> = ({
     dispatch({ type: 'GET_USERS', payload: data.items });
   };
 
-  // Clear users
+  /**
+   * Clear user from state
+   */
   const clearUsers = async (): Promise<void> => {
     dispatch({ type: 'CLEAR_USERS' });
+  };
+
+  /**
+   * Get specific user data
+   * @param userId
+   */
+  const getUser = async (userId: string): Promise<void> => {
+    dispatch({ type: 'ENABLE_LOADING' });
+
+    const response = await fetch(`${GITHUB_URL}/users/${userId}`);
+
+    if (response.status === 404) {
+      // TODO: Redirect to not found
+      return;
+    }
+    const data: UserInterface = await response.json();
+
+    dispatch({ type: 'GET_SINGLE_USER', payload: data });
+  };
+
+  /**
+   * Get user Repos from github
+   */
+  const getUserRepos = async (userId: string): Promise<void> => {
+    dispatch({ type: 'ENABLE_LOADING' });
+
+    const params = new URLSearchParams({
+      sort: 'created',
+      per_page: '10',
+    });
+
+    const response = await fetch(
+      `${GITHUB_URL}/users/${userId}/repos?${params}`
+    );
+
+    if (response.status === 404) {
+      // TODO: Redirect to not found
+      return;
+    }
+    const data: UserInterface = await response.json();
+
+    dispatch({ type: 'GET_USER_REPOS', payload: data });
   };
 
   return (
     <GithubContext.Provider
       value={{
         users: state.users,
+        user: state.user,
+        repos: state.repos,
         loading: state.loading,
-        fetchUsers,
         searchUser,
         clearUsers,
+        getUser,
+        getUserRepos,
       }}
     >
       {children}
