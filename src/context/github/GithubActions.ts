@@ -1,20 +1,35 @@
+import axios, { AxiosResponse } from 'axios';
+
 import UserInterface from '../../interfaces/User.interface';
 import UserSearchInterface from '../../interfaces/UserSpecific.interface';
 
 const GITHUB_URL = process.env.REACT_APP_GITHUB_URL;
 
+const githubRequest = axios.create({
+  baseURL: GITHUB_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 export const searchUser = async (
   userId: string
-): Promise<UserSearchInterface> => {
+): Promise<Array<UserInterface>> => {
   const params = new URLSearchParams({
     q: userId,
   });
 
   // The URL we are trying to create is: https://api.github.com/search/users?q=USERNAME
-  const response = await fetch(`${GITHUB_URL}/search/users?${params}`);
-  const data: UserSearchInterface = await response.json();
+  // --- BY USING FETCH ---
+  // const response = await fetch(`${GITHUB_URL}/search/users?${params}`);
+  // const data: UserSearchInterface = await response.json();
 
-  return data;
+  // --- BY USING AXIOS ---
+  const response: AxiosResponse<UserSearchInterface> = await githubRequest.get(
+    `/search/users?${params}`
+  );
+
+  return response.data.items;
 };
 
 export const getUser = async (

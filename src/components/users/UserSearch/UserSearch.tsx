@@ -36,7 +36,7 @@ const UserSearch: FunctionComponent<UserSearchProps> = () => {
     dispatch({ type: 'ENABLE_LOADING' });
 
     const users = await searchUser(text);
-    dispatch({ type: 'GET_USERS', payload: users.items });
+    dispatch({ type: 'GET_USERS', payload: users });
 
     setText('');
   };
