@@ -18,6 +18,8 @@ const App: FunctionComponent = () => {
   // This  is the method we can use to access ENV variables:
   // console.log(process.env.REACT_APP_GITHUB_TOKEN);
 
+  console.log('ENV', process.env);
+
   return (
     <AlertProvider>
       <GithubProvider>

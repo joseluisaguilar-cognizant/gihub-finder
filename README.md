@@ -1,5 +1,6 @@
 # Github finder project
 
+Netlify deployment: https://github-finder-jla.netlify.app/
 ![Github finder screenshot](./src/assets/Screenshot.png)
 
 ## Notes:
