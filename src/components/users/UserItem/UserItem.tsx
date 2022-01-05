@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
-import UserInterface from '../../../../interfaces/User.interface';
+import UserInterface from '../../../interfaces/User.interface';
 
 interface UserItemProps {
   user: UserInterface;

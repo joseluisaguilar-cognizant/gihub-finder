@@ -1,7 +1,8 @@
 import { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { GithubContext } from '../../../../context/github/GithubContext';
-import UserInterface from '../../../../interfaces/User.interface';
-import Spinner from '../../../shared/Spinner/Spinner';
+import { GithubContext } from '../../../context/github/GithubContext';
+import UserInterface from '../../../interfaces/User.interface';
+import Spinner from '../../shared/Spinner/Spinner';
+
 import UserItem from '../UserItem/UserItem';
 
 interface UserResultsProps {}

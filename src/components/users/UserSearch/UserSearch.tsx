@@ -5,13 +5,16 @@ import {
   useState,
   useContext,
 } from 'react';
-import { GithubContext } from '../../../../context/github/GithubContext';
+import { GithubContext } from '../../../context/github/GithubContext';
+import { AlertContext } from '../../../context/alert/AlertContext';
 
 interface UserSearchProps {}
 const UserSearch: FunctionComponent<UserSearchProps> = () => {
   const [text, setText] = useState<string>('');
 
+  // Use context
   const { users, searchUser, clearUsers } = useContext(GithubContext);
+  const { setAlert } = useContext(AlertContext);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const {
@@ -25,7 +28,7 @@ const UserSearch: FunctionComponent<UserSearchProps> = () => {
     event.preventDefault();
 
     if (!text) {
-      alert('Please enter something');
+      setAlert('Please enter something', 'error');
       return;
     }
 

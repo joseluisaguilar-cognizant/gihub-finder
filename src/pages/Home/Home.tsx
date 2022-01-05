@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
-import UserResults from '../../components/layout/users/UserResults/UserResults';
-import UserSearch from '../../components/layout/users/UserSearch/UserSearch';
+import UserResults from '../../components/users/UserResults/UserResults';
+import UserSearch from '../../components/users/UserSearch/UserSearch';
 
 interface HomeProps {}
 
