@@ -7,13 +7,14 @@ import {
 } from 'react';
 import { GithubContext } from '../../../context/github/GithubContext';
 import { AlertContext } from '../../../context/alert/AlertContext';
+import { searchUser } from '../../../context/github/GithubActions';
 
 interface UserSearchProps {}
 const UserSearch: FunctionComponent<UserSearchProps> = () => {
   const [text, setText] = useState<string>('');
 
   // Use context
-  const { users, searchUser, clearUsers } = useContext(GithubContext);
+  const { users, dispatch } = useContext(GithubContext);
   const { setAlert } = useContext(AlertContext);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -24,7 +25,7 @@ const UserSearch: FunctionComponent<UserSearchProps> = () => {
     setText(value);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!text) {
@@ -32,9 +33,11 @@ const UserSearch: FunctionComponent<UserSearchProps> = () => {
       return;
     }
 
-    searchUser(text);
+    dispatch({ type: 'ENABLE_LOADING' });
 
-    // TODO search users
+    const users = await searchUser(text);
+    dispatch({ type: 'GET_USERS', payload: users.items });
+
     setText('');
   };
 
@@ -63,7 +66,10 @@ const UserSearch: FunctionComponent<UserSearchProps> = () => {
       </div>
       {users.length > 0 ? (
         <div>
-          <button className="btn btn-gray btn-lg" onClick={clearUsers}>
+          <button
+            className="btn btn-gray btn-lg"
+            onClick={() => dispatch({ type: 'CLEAR_USERS' })}
+          >
             Clear
           </button>
         </div>

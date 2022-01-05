@@ -9,14 +9,20 @@ export interface IGithubReducerState {
   loading: boolean;
 }
 
+export interface IGithubReducerAction {
+  type: string;
+  payload?: any;
+}
+
 const githubReducer = (
   state: IGithubReducerState,
-  action: { type: string; payload?: any }
+  action: IGithubReducerAction
 ) => {
   switch (action.type) {
     case 'GET_USERS':
       return { ...state, users: action.payload, loading: false };
     case 'GET_SINGLE_USER':
+      console.log('eee', action.payload);
       return { ...state, user: action.payload, loading: false };
     case 'GET_USER_REPOS':
       return { ...state, repos: action.payload, loading: false };
